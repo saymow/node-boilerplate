@@ -7,11 +7,15 @@ import CreateUserService from '../service/createUserService';
 const usersRouter = Router();
 
 usersRouter.get('/', async (req, res) => {
-  const usersRepository = getCustomRepository(UsersRepository);
+  try {
+    const usersRepository = getCustomRepository(UsersRepository);
 
-  const users = await usersRepository.find();
+    const users = await usersRepository.find();
 
-  return res.send(users);
+    return res.send(users);
+  } catch (err) {
+    return res.status(400).send({ err: err.message });
+  }
 });
 
 usersRouter.post('/', async (req, res) => {
@@ -26,7 +30,9 @@ usersRouter.post('/', async (req, res) => {
       password,
     });
 
-    return res.send(user);
+    delete user.password;
+
+    return res.status(201).send(user);
   } catch (err) {
     return res.status(400).json({
       message: err.message,
