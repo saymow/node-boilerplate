@@ -1,11 +1,14 @@
-import express from 'express';
+import 'reflect-metadata';
 
+import express from 'express';
 import routes from './routes';
 
-const app = express();
+import './database';
 
+const app = express();
+const PORT = 3333 || process.env.PORT;
+
+app.use(express.json());
 app.use(routes);
 
-app.get('/', (req, res) => res.send('Hello world'));
-
-app.listen(3333, () => console.log('Server on'));
+app.listen(PORT, () => console.log('Server on, port', PORT));

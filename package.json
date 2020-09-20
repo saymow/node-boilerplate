@@ -5,16 +5,22 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "dev:server": "tsnd --inspect --transpile-only ./src/server.ts --ignore-watch node_modules"
+    "dev:server": "tsnd --inspect --transpile-only ./src/server.ts --ignore-watch node_modules",
+    "typeorm": "tsnd ./node_modules/typeorm/cli.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "pg": "^8.3.3",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.2.26",
+    "uuid": "^8.3.0"
   },
   "devDependencies": {
     "@types/express": "^4.17.8",
+    "@types/uuid": "^8.3.0",
     "@typescript-eslint/eslint-plugin": "^4.1.0",
     "@typescript-eslint/parser": "^4.1.0",
     "eslint": "^7.9.0",
