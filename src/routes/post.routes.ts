@@ -1,10 +1,13 @@
 import { Router } from 'express';
 import { getRepository } from 'typeorm';
 
+import authenticate from '../middlewares/auth';
 import Post from '../models/Post';
 import CreatePostService from '../service/createPostService';
 
 const postsRouter = Router();
+
+postsRouter.use(authenticate);
 
 postsRouter.get('/', async (req, res) => {
   try {
@@ -21,6 +24,8 @@ postsRouter.get('/', async (req, res) => {
 postsRouter.post('/', async (req, res) => {
   try {
     const { author_id, title, body } = req.body;
+
+    console.log(req.headers);
 
     const createPost = new CreatePostService();
 

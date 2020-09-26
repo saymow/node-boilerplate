@@ -5,6 +5,7 @@
   "username": "postgres",
   "password": 252525,
   "database": "postgres_main",
+  "logging": true,
   "entities": ["./src/models/*.ts"],
   "migrations": ["./src/database/migrations/*.ts"],
   "cli": {
