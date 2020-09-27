@@ -11,9 +11,11 @@ postsRouter.use(authenticate);
 
 postsRouter.get('/', async (req, res) => {
   try {
+    const { id } = req.user;
+
     const postsRepository = getRepository(Post);
 
-    const posts = await postsRepository.find();
+    const posts = await postsRepository.find({ where: { id } });
 
     return res.send(posts);
   } catch (err) {
@@ -24,8 +26,6 @@ postsRouter.get('/', async (req, res) => {
 postsRouter.post('/', async (req, res) => {
   try {
     const { author_id, title, body } = req.body;
-
-    console.log(req.headers);
 
     const createPost = new CreatePostService();
 
