@@ -3,42 +3,34 @@ import { getRepository } from 'typeorm';
 
 import authenticate from '../middlewares/auth';
 import Post from '../models/Post';
-import CreatePostService from '../service/createPostService';
+import CreatePostService from '../service/CreatePostService';
 
 const postsRouter = Router();
 
 postsRouter.use(authenticate);
 
 postsRouter.get('/', async (req, res) => {
-  try {
-    const { id } = req.user;
+  const { id } = req.user;
 
-    const postsRepository = getRepository(Post);
+  const postsRepository = getRepository(Post);
 
-    const posts = await postsRepository.find({ where: { id } });
+  const posts = await postsRepository.find({ where: { id } });
 
-    return res.send(posts);
-  } catch (err) {
-    return res.status(400).send({ err: err.message });
-  }
+  return res.send(posts);
 });
 
 postsRouter.post('/', async (req, res) => {
-  try {
-    const { author_id, title, body } = req.body;
+  const { author_id, title, body } = req.body;
 
-    const createPost = new CreatePostService();
+  const createPost = new CreatePostService();
 
-    const post = await createPost.execute({
-      author_id,
-      title,
-      body,
-    });
+  const post = await createPost.execute({
+    author_id,
+    title,
+    body,
+  });
 
-    return res.send(post);
-  } catch (err) {
-    return res.status(400).send({ err: err.message });
-  }
+  return res.send(post);
 });
 
 export default postsRouter;

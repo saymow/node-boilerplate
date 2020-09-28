@@ -2,6 +2,8 @@ import { Request, Response, NextFunction } from 'express';
 import { verify } from 'jsonwebtoken';
 import { TOKEN_SECRET } from '../constants';
 
+import AppError from '../errors/AppError';
+
 interface TokenPaylod {
   iat: number;
   exp: number;
@@ -10,20 +12,20 @@ interface TokenPaylod {
 
 export default function authenticate(
   req: Request,
-  res: Response,
+  _: Response,
   next: NextFunction
-) {
+): void {
   const { authorization } = req.headers;
 
-  if (!authorization) throw new Error('Unauthorized.');
+  if (!authorization) throw new AppError('Unauthorized.', 401);
 
   const parts = authorization.split(' ');
 
-  if (parts.length !== 2) throw new Error('Unauthorized');
+  if (parts.length !== 2) throw new AppError('Unauthorized', 401);
 
   const [prefix, token] = parts;
 
-  if (prefix !== 'Bearer') throw new Error('Unauthorized');
+  if (prefix !== 'Bearer') throw new AppError('Unauthorized', 401);
 
   try {
     const decoded = verify(token, TOKEN_SECRET) as TokenPaylod;
@@ -34,6 +36,6 @@ export default function authenticate(
 
     return next();
   } catch {
-    throw new Error('Unauthorized');
+    throw new AppError('Unauthorized', 401);
   }
 }

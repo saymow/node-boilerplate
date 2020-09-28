@@ -6,6 +6,8 @@ import uploadConfig from '../config/upload';
 import UsersRepository from '../repositories/UsersRepository';
 import User from '../models/User';
 
+import AppError from '../errors/AppError';
+
 interface Req {
   user_id: string;
   avatarFilename: string;
@@ -17,7 +19,7 @@ class UpdateUserAvatarService {
 
     const user = await usersRepository.findOne(user_id);
 
-    if (!user) throw new Error('User must be autheticated.');
+    if (!user) throw new AppError('User must be autheticated.', 401);
 
     if (user.avatar) {
       const userAvatarFilePath = path.join(uploadConfig.directory, user.avatar);
